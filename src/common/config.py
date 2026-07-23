@@ -23,7 +23,7 @@ class Settings:
             output_dir=Path(os.getenv("OUTPUT_DIR", "outputs")),
             strategy_dir=Path(os.getenv("STRATEGY_DIR", "strategies")),
             server_name=os.getenv("GRADIO_SERVER_NAME", "0.0.0.0"),
-            server_port=int(os.getenv("GRADIO_SERVER_PORT", "7860")),
+            server_port=int(os.getenv("GRADIO_SERVER_PORT", "8888")),
             gradio_share=os.getenv("GRADIO_SHARE", "false").lower() == "true",
             lot_size=int(os.getenv("A_SHARE_LOT_SIZE", "100")),
             output_retention_hours=int(os.getenv("OUTPUT_RETENTION_HOURS", "24")),
