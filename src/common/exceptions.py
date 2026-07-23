@@ -40,3 +40,14 @@ class StrategyReadOnlyError(StrategyError):
 
 class StrategyStorageError(StrategyError):
     """Raised when a strategy artifact cannot be persisted."""
+
+class BacktestError(RuntimeError):
+    """Base error for backtest workflows."""
+
+
+class BacktestValidationError(BacktestError):
+    """Raised when backtest inputs or strategy rules are invalid."""
+
+
+class BacktestExecutionError(BacktestError):
+    """Raised when a backtest cannot be completed."""

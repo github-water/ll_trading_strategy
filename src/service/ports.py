@@ -56,3 +56,14 @@ class StrategyRepository(Protocol):
 
     def path_for(self, strategy_id: str) -> Path:
         """Return the JSON path for one strategy."""
+
+
+class BacktestChartBuilder(Protocol):
+    def build_price(self, result):
+        """Build the price chart with buy/sell markers and active stop."""
+
+    def build_equity(self, result):
+        """Build strategy and benchmark equity curves."""
+
+    def build_drawdown(self, result):
+        """Build the strategy drawdown curve."""

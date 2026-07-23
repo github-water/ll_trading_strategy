@@ -11,10 +11,16 @@ if str(SRC_DIR) not in sys.path:
 
 from common.config import Settings
 from infra.charting.plotly_chart_builder import PlotlyTechnicalChartBuilder
+from infra.charting.backtest_chart_builder import PlotlyBacktestChartBuilder
 from infra.market_data.efinance_gateway import EfinanceMarketDataGateway
 from infra.storage.csv_repository import LocalCsvRepository
 from infra.storage.strategy_json_repository import LocalStrategyJsonRepository
 from service.market_data_service import MarketDataService
+from service.backtest_engine import BacktestEngine
+from service.backtest_service import BacktestService
+from service.position_sizing_service import PositionSizingService
+from service.strategy_indicator_engine import StrategyIndicatorEngine
+from service.strategy_rule_evaluator import StrategyRuleEvaluator
 from service.technical_analysis_service import TechnicalAnalysisService
 from service.technical_indicator_service import TechnicalIndicatorService
 from service.strategy_management_service import StrategyManagementService
@@ -28,13 +34,22 @@ def create_app():
         gateway=EfinanceMarketDataGateway(settings=settings),
         repository=repository,
     )
-    strategy_management_service = StrategyManagementService(
-        LocalStrategyJsonRepository(settings)
-    )
+    strategy_repository = LocalStrategyJsonRepository(settings)
+    strategy_management_service = StrategyManagementService(strategy_repository)
     technical_analysis_service = TechnicalAnalysisService(
         repository=repository,
         indicators=TechnicalIndicatorService(),
         chart_builder=PlotlyTechnicalChartBuilder(),
+    )
+    position_sizing_service = PositionSizingService()
+    backtest_service = BacktestService(
+        csv_repository=repository,
+        strategy_repository=strategy_repository,
+        indicator_engine=StrategyIndicatorEngine(),
+        rule_evaluator=StrategyRuleEvaluator(),
+        engine=BacktestEngine(position_sizing_service),
+        chart_builder=PlotlyBacktestChartBuilder(),
+        position_sizing=position_sizing_service,
     )
     return (
         build_app(
@@ -42,6 +57,7 @@ def create_app():
             settings,
             technical_analysis_service=technical_analysis_service,
             strategy_management_service=strategy_management_service,
+            backtest_service=backtest_service,
         ),
         settings,
     )
