@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trading-strategy-assistant"
+version = "0.3.0"
+description = "Gradio trading strategy assistant"
+requires-python = ">=3.10"
+dependencies = [
+  "gradio>=5.0,<7.0",
+  "efinance==0.5.9",
+  "pandas>=2.2,<3.0",
+  "plotly>=6.0,<7.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0,<10.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"

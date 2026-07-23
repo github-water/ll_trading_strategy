@@ -1,0 +1,4 @@
+gradio>=5.0,<7.0
+efinance==0.5.9
+pandas>=2.2,<3.0
+plotly>=6.0,<7.0
